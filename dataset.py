@@ -25,12 +25,3 @@ class MyDataset(Dataset):
             image = self.transform(image)
 
         return image, label
-# Usage
-labels = 'lego_pieces.csv'
-dataset = MyDataset(labels_csv=labels)
-
-
-image, label = dataset.__getitem__(200)
-print(label)
-cv2.imshow('',image)
-cv2.waitKey(0)

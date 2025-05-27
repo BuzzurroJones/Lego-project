@@ -1,16 +1,23 @@
 import torch
-from torch.utils.data import Dataset
+from torch.utils.data import random_split
 from torch.utils.data import DataLoader
 from torchvision import datasets
 from torchvision.transforms import ToTensor
 from torch import nn
 import torchmetrics
+from dataset import MyDataset
+
+labels = 'lego_pieces.csv'
+dataset = MyDataset(labels_csv=labels)
+
+train_size = int(0.8 * len(dataset))  # 80% for training
+test_size = len(dataset) - train_size  # Remaining for testing
+
+training_data, test_data = random_split(dataset, [train_size, test_size])
+
+print("split")
 
 device = ('cuda' if torch.cuda.is_available() else 'cpu') # choose the device depending on GPU compatibility
-
-# Start by importing the training and testing datasets.
-training_data = datasets.MNIST(root='data', train=True, download=True, transform=ToTensor()) # (down)load, and convert to tensor, the training data of MNIST and into a 'data' folder
-test_data = datasets.MNIST(root='data', train=False, download=True, transform=ToTensor()) # (down)load, and convert to tensor, the testing data of MNIST and into a 'data' folder
 
 # Define the structure of the CNN model.
 class MyCNN(nn.Module):
@@ -18,7 +25,7 @@ class MyCNN(nn.Module):
         super().__init__()
         # Create a sequential CNN for the convolution and pooling layers.
         self.cnn = nn.Sequential(
-            nn.Conv2d(in_channels=1, out_channels=5, kernel_size=3), # use 2D convolution on grayscale images (1 input channel, arbitrary output channels) using a 3x3 kernel
+            nn.Conv2d(in_channels=3, out_channels=5, kernel_size=3), # use 2D convolution on grayscale images (1 input channel, arbitrary output channels) using a 3x3 kernel
             nn.ReLU(), # set an activation function
             nn.Conv2d(in_channels=5, out_channels=10, kernel_size=3),
             nn.ReLU()
