@@ -1,6 +1,4 @@
-import os
 import pandas as pd
-from torchvision.io import read_image
 from torch.utils.data import Dataset
 from resizer import resizer
 import cv2
