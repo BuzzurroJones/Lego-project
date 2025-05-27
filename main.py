@@ -24,7 +24,8 @@ test_size = len(dataset) - train_size  # Remaining for testing
 
 training_data, test_data = random_split(dataset, [train_size, test_size])
 
-device = ('cuda' if torch.cuda.is_available() else 'cpu') # choose the device depending on GPU compatibility
+device = ('cuda' if torch.cuda.is_available() else 'cpu') # choose the device depending on GPU compatibility 
+#WARNING several times .to(device) will appear, it should work properly even if the device is cpu, but if it doesn't i believe you can cut it or find a way to fix it
 
 # Define the structure of the CNN model.
 class MYCNN(nn.Module):
